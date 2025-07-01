@@ -26,10 +26,7 @@ Sistema completo de agendamento para clínicas e consultórios médicos, desenvo
    - Vá para **Authentication > Users**
    - Clique em **"Add user"**
    - Crie os usuários:
-     - **Admin:** `admin@clinic.com` / `admin123` ✅ Email confirmado
-     - **Prof 1:** `joao.silva@clinic.com` / `prof123` ✅ Email confirmado
-     - **Prof 2:** `maria.costa@clinic.com` / `prof123` ✅ Email confirmado
-     - **Prof 3:** `bruno.mattos142@gmail.com` / `0425Lorenna@` ✅ Email confirmado
+   
 
 4. **Obter credenciais:**
    - Vá para **Settings > API**
