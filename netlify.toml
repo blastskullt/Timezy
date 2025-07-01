@@ -1,0 +1,78 @@
+[build]
+  publish = "dist"
+  command = "npm ci && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+# Headers de segurança para todas as páginas
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Segurança básica
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    
+    # Content Security Policy
+    Content-Security-Policy = '''
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://*.supabase.co;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' data: https: blob:;
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    '''
+    
+    # HSTS (HTTP Strict Transport Security)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+# Cache otimizado para assets estáticos
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache para arquivos de fonte
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# SPA redirect - ESSENCIAL para React Router funcionar
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Configurações de contexto para diferentes ambientes
+[context.production.environment]
+  NODE_ENV = "production"
+  VITE_APP_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "staging"
+  VITE_APP_ENV = "staging"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
+  VITE_APP_ENV = "development"
+
+# Configurações de Edge Functions (se necessário no futuro)
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Configurações de Forms (se necessário)
+[forms]
+  spam_protection = true
